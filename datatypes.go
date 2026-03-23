@@ -7,6 +7,10 @@ import (
 type Date time.Time
 
 func (d *Date) UnmarshalJSON(bytes []byte) error {
+	if string(bytes) == "null" || string(bytes) == `""` {
+		*d = Date{}
+		return nil
+	}
 	date, err := time.Parse(`"2006-01-02"`, string(bytes))
 	if err == nil {
 		*d = Date(date)
@@ -21,6 +25,10 @@ func (d Date) MarshalJSON() ([]byte, error) {
 type Time time.Time
 
 func (t *Time) UnmarshalJSON(bytes []byte) error {
+	if string(bytes) == "null" || string(bytes) == `""` {
+		*t = Time{}
+		return nil
+	}
 	date, err := time.Parse(`"`+timeFormat+`"`, string(bytes))
 	if err == nil {
 		*t = Time(date)

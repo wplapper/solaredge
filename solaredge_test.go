@@ -1,13 +1,14 @@
 package solaredge
 
 import (
-	"codeberg.org/clambin/go-common/testutils"
 	"net/http"
 	"net/http/httptest"
 	"os"
 	"reflect"
 	"testing"
 	"time"
+
+	"codeberg.org/clambin/go-common/testutils"
 )
 
 var testServer *httptest.Server

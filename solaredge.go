@@ -18,9 +18,11 @@ to the Accounts List, Meters or Sensors API, feel free to get in touch to get th
 package solaredge
 
 import (
+	"bytes"
 	"cmp"
 	"context"
 	"encoding/json"
+	"io"
 	"net/http"
 	"net/url"
 	"strconv"
@@ -66,7 +68,10 @@ func call[T any](ctx context.Context, c *Client, path string, args url.Values) (
 	if resp.StatusCode != http.StatusOK {
 		return response, newResponseError(resp)
 	}
-	err = json.NewDecoder(resp.Body).Decode(&response)
+
+	var buf bytes.Buffer
+	err = json.NewDecoder(io.TeeReader(resp.Body, &buf)).Decode(&response)
+	_ = buf
 	return response, err
 }
 
